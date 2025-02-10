@@ -99,8 +99,8 @@ void setup() {
 
     auto cfg = i2s.defaultConfig();
     cfg.pin_bck = 18;
-    cfg.pin_ws = 19;
-    cfg.pin_data = 5;
+    cfg.pin_ws = 5;
+    cfg.pin_data = 19;
     i2s.begin(cfg);
 
     a2dp_sink.set_avrc_metadata_callback(avrc_metadata_callback);
