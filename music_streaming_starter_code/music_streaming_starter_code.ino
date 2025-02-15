@@ -101,35 +101,35 @@ void avrc_metadata_callback(uint8_t data1, const uint8_t *data2) {
       break;
   }
   // Update OLED display
-  // display.clearDisplay();
-  // display.setTextSize(1); // Smaller text to fit all info
-  // display.setTextColor(SSD1306_WHITE);
-  // display.setCursor(0, 0);
-  // display.print(F("Title: "));
-  // display.println(title);
-  // display.print( F("Artist: "));
-  // display.println(artist);
-  // display.print(F("Album: "));
-  // display.println(album);
-  // display.display();
+  display.clearDisplay();
+  display.setTextSize(1); // Smaller text to fit all info
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.print(F("Title: "));
+  display.println(title);
+  display.print( F("Artist: "));
+  display.println(artist);
+  display.print(F("Album: "));
+  display.println(album);
+  display.display();
 }
 void setup() {
     Serial.begin(115200);
-    // pinMode (CLK,INPUT);
-    // pinMode (DT,INPUT);
-    // pinMode(SW, INPUT_PULLUP);
-    // lastStateCLK = digitalRead(CLK);
-    // // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    // if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    //   Serial.println(F("SSD1306 allocation failed"));
-    //   for(;;); // Don't proceed, loop forever
-    // }
-    // // Show initial display buffer contents on the screen --
-    // // the library initializes this with an Adafruit splash screen.
-    // display.display();
-    // delay(2000); // Pause for 2 seconds
-    // // Clear the buffer
-    // display.clearDisplay();
+    pinMode (CLK,INPUT);
+    pinMode (DT,INPUT);
+    pinMode(SW, INPUT_PULLUP);
+    lastStateCLK = digitalRead(CLK);
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+    if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+      Serial.println(F("SSD1306 allocation failed"));
+      for(;;); // Don't proceed, loop forever
+    }
+    // Show initial display buffer contents on the screen --
+    // the library initializes this with an Adafruit splash screen.
+    display.display();
+    delay(2000); // Pause for 2 seconds
+    // Clear the buffer
+    display.clearDisplay();
     
     auto cfg = i2s.defaultConfig();
     cfg.pin_bck = 18;
@@ -145,36 +145,36 @@ void setup() {
 
 void loop() {
     // Audio processing happens in callback
-    // currentStateCLK = digitalRead(CLK); //CLK current value
-    // if (currentStateCLK != lastStateCLK  && currentStateCLK == 1){  //CLK change  && CLK only 1state change
-    //  if (digitalRead(DT) != currentStateCLK) { //Encoder  CCW Rotation
-    //    if (volume < 127){
-    //     volume++;
-    //    }
-    //     Serial.println("Volume Up");
-    //     delay(2);
-    //  } else {      // Encoder CW Rotation
-    //     if (volume > 0){
-    //       volume--;
-    //     }
-    //     Serial.println("Volume Down");
-    //     delay(2);
-    //  }
-    // }
-    // lastStateCLK  = currentStateCLK; // Last CLK Value
-    // int btnState = digitalRead(SW);  // Button Value
-    // if (btnState == LOW) { // Switch pushed
-    //   if  (millis() - lastButtonPress > 1000) { // Over 50ms
-    //     Serial.println("Button press");
-    //     buttonState = !buttonState;
-    //     if(buttonState){
-    //       a2dp_sink.pause();
-    //     }
-    //     else {
-    //       a2dp_sink.play();
-    //     }
-    //     lastButtonPress = millis();
-    //   }
-    // }
+    currentStateCLK = digitalRead(CLK); //CLK current value
+    if (currentStateCLK != lastStateCLK  && currentStateCLK == 1) {  //CLK change  && CLK only 1state change
+     if (digitalRead(DT) != currentStateCLK) { //Encoder  CCW Rotation
+       if (volume < 127){
+        volume++;
+       }
+        Serial.println("Volume Up");
+        delay(2);
+     } else {      // Encoder CW Rotation
+        if (volume > 0){
+          volume--;
+        }
+        Serial.println("Volume Down");
+        delay(2);
+     }
+    }
+    lastStateCLK  = currentStateCLK; // Last CLK Value
+    int btnState = digitalRead(SW);  // Button Value
+    if (btnState == LOW) { // Switch pushed
+      if  (millis() - lastButtonPress > 1000) { // Over 50ms
+        Serial.println("Button press");
+        buttonState = !buttonState;
+        if(buttonState){
+          a2dp_sink.pause();
+        }
+        else {
+          a2dp_sink.play();
+        }
+        lastButtonPress = millis();
+      }
+    }
     // a2dp_sink.set_volume(volume);
 }
